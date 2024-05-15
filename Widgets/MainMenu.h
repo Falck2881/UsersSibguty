@@ -28,11 +28,11 @@ namespace FKWgt
             void initializedLayouts();
 
         private:
-            FkAction::ActionButton actionToButtonMain;
-            FkAction::ActionButton actionToButtonUsers;
-            FkAction::ActionButton actionToButtonFacultets;
-            FkAction::ActionButton actionToButtonGroups;
-            FkAction::ActionButton actionHistorySearch;
+            Fk::ActionButton actionToButtonMain;
+            Fk::ActionButton actionToButtonUsers;
+            Fk::ActionButton actionToButtonFacultets;
+            Fk::ActionButton actionToButtonGroups;
+            Fk::ActionButton actionHistorySearch;
             std::unique_ptr<ftxui::Component> buttonMain;
             std::unique_ptr<ftxui::Component> buttonUsers;
             std::unique_ptr<ftxui::Component> buttonFacultets;

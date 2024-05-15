@@ -5,7 +5,14 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(ftxui 5 REQUIRED)
+include(FetchContent)
+set(FETCHCONTENT_UPDATES_DISCONNECTED TRUE)
+FetchContent_Declare(ftxui
+  GIT_REPOSITORY https://github.com/ArthurSonzogni/ftxui
+  GIT_TAG main # Important: Specify a version or a commit hash here.
+)
+FetchContent_MakeAvailable(ftxui)
+
 
 set(WIDGETS Widgets/MainMenu.h
             Widgets/MainMenu.cpp

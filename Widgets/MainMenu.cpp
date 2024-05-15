@@ -1,5 +1,4 @@
 #include "MainMenu.h"
-#include "Contents/IShowContent.h"
 #include "Contents/IShowContentMain.h"
 #include "Contents/IShowContentUsers.h"
 #include "Contents/IShowContentFacultets.h"
@@ -10,16 +9,16 @@ using namespace ftxui;
 using namespace Fk::Interface;
 
 FKWgt::MainMenu::MainMenu():
-    actionToButtonMain{FkAction::ActionButton(std::make_unique<Fk::Content>(std::make_unique<IShowContentMain>(this)))},
-    actionToButtonUsers{FkAction::ActionButton(std::make_unique<Fk::Content>(std::make_unique<IShowContentUsers>(this)))},
-    actionToButtonFacultets{FkAction::ActionButton(std::make_unique<Fk::Content>(std::make_unique<IShowContentFacultets>(this)))},
-    actionToButtonGroups{FkAction::ActionButton(std::make_unique<Fk::Content>(std::make_unique<IShowContentGroups>(this)))},
-    actionHistorySearch{FkAction::ActionButton(std::make_unique<Fk::Content>(std::make_unique<IShowContentHistorySearch>(this)))},
-    buttonMain{std::make_unique<Component>(Button("Главная", actionToButtonMain, ButtonOption::Animated()))},
-    buttonUsers{std::make_unique<Component>(Button("Пользователи", actionToButtonUsers, ButtonOption::Animated()))},
-    buttonFacultets{std::make_unique<Component>(Button("Факультеты", actionToButtonFacultets, ButtonOption::Animated()))},
-    buttonGroups{std::make_unique<Component>(Button("Группы", actionToButtonGroups, ButtonOption::Animated()))},
-    buttonHistorySearch{std::make_unique<Component>(Button("История поиска", actionHistorySearch, ButtonOption::Animated()))}
+    actionToButtonMain{Fk::ActionButton(std::make_unique<Fk::Content>(std::make_unique<IShowContentMain>(this)))},
+    actionToButtonUsers{Fk::ActionButton(std::make_unique<Fk::Content>(std::make_unique<IShowContentUsers>(this)))},
+    actionToButtonFacultets{Fk::ActionButton(std::make_unique<Fk::Content>(std::make_unique<IShowContentFacultets>(this)))},
+    actionToButtonGroups{Fk::ActionButton(std::make_unique<Fk::Content>(std::make_unique<IShowContentGroups>(this)))},
+    actionHistorySearch{Fk::ActionButton(std::make_unique<Fk::Content>(std::make_unique<IShowContentHistorySearch>(this)))},
+    buttonMain{std::make_unique<Component>(Button("Главная", std::bind(&Fk::ActionButton::onClick, &actionToButtonMain), ButtonOption::Animated()))},
+    buttonUsers{std::make_unique<Component>(Button("Пользователи", std::bind(&Fk::ActionButton::onClick, &actionToButtonUsers), ButtonOption::Animated()))},
+    buttonFacultets{std::make_unique<Component>(Button("Факультеты", std::bind(&Fk::ActionButton::onClick, &actionToButtonFacultets), ButtonOption::Animated()))},
+    buttonGroups{std::make_unique<Component>(Button("Группы", std::bind(&Fk::ActionButton::onClick, &actionToButtonGroups), ButtonOption::Animated()))},
+    buttonHistorySearch{std::make_unique<Component>(Button("История поиска", std::bind(&Fk::ActionButton::onClick, &actionHistorySearch), ButtonOption::Animated()))}
 {
 
 }
