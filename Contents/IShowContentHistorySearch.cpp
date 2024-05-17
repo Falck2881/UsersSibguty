@@ -7,5 +7,7 @@ Fk::Interface::IShowContentHistorySearch::IShowContentHistorySearch(FKWgt::MainM
 
 void Fk::Interface::IShowContentHistorySearch::show()
 {
-
+    auto data = "История поиска";
+    auto contentMainMenu = ftxui::Renderer([&](){return ftxui::paragraphAlignCenter(data);});
+    _mainMenu->updateContent(contentMainMenu);
 }

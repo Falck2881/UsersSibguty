@@ -27,7 +27,6 @@ namespace FKWgt
 
         private:
             void placeComponents();
-            ftxui::Element infoRelease();
 
         private:
             Fk::ActionButton actionToButtonMain;
@@ -44,7 +43,7 @@ namespace FKWgt
             ftxui::ScreenInteractive screen;
             ftxui::Component sectionContent;
             ftxui::Component sectionRender;
-            ftxui::Component layout;
+            ftxui::Component layoutInMainMenu;
             int minSize;
     };
 

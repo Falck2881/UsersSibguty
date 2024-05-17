@@ -10,8 +10,8 @@ Fk::Interface::IShowContentMain::IShowContentMain(FKWgt::MainMenu* const mainMen
 void Fk::Interface::IShowContentMain::show()
 {
     auto data = Fk::Helpers::FileStream::data();
-    auto element = ftxui::paragraph(data);
-    _mainMenu->updateContent(element);
+    auto contentMainMenu = ftxui::Renderer([&](){return ftxui::paragraphAlignCenter(data);});
+    _mainMenu->updateContent(contentMainMenu);
 }
 
 

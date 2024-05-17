@@ -7,5 +7,7 @@ Fk::Interface::IShowContentGroups::IShowContentGroups(FKWgt::MainMenu* const mai
 
 void Fk::Interface::IShowContentGroups::show()
 {
-
+    auto data = "Группы";
+    auto contentMainMenu = ftxui::Renderer([&](){return ftxui::paragraphAlignCenter(data);});
+    _mainMenu->updateContent(contentMainMenu);
 }

@@ -1,9 +1,4 @@
 cmake_minimum_required(VERSION 3.21)
-project(UsersSibguty LANGUAGES CXX)
-
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(FetchContent)
 set(FETCHCONTENT_UPDATES_DISCONNECTED TRUE)
@@ -12,6 +7,18 @@ FetchContent_Declare(ftxui
   GIT_TAG main # Important: Specify a version or a commit hash here.
 )
 FetchContent_MakeAvailable(ftxui)
+
+project(UsersSibguty LANGUAGES CXX)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_library(SQLAPI_LIB /usr/lib/SQLAPI++)
+
+find_path(SQLAPI_INCLUDES PATH /usr/include/SQLAPI++)
+
+include_directories(${SQLAPI_INCLUDES})
 
 set(Helpers Helpers/LayoutHelpers.h
             Helpers/LayoutHelpers.cpp
@@ -35,8 +42,10 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Data/release.txt" ${CMAKE_CURRENT_BI
 
 add_executable(UsersSibguty main.cpp ${WIDGETS} ${Content} ${Helpers})
 
-target_link_directories(UsersSibguty PRIVATE Widgets/ Contents/ Helpers/)
+
+target_link_directories(UsersSibguty PRIVATE Widgets/ Contents/ Helpers/ ${SQLAPI_INCLUDES})
 
 target_link_libraries(UsersSibguty  PRIVATE ftxui::screen
                                     PRIVATE ftxui::dom
-                                    PRIVATE ftxui::Component)
+                                    PRIVATE ftxui::component
+                                    PRIVATE ${SQLAPI_LIB})

@@ -7,5 +7,7 @@ Fk::Interface::IShowContentFacultets::IShowContentFacultets(FKWgt::MainMenu* con
 
 void Fk::Interface::IShowContentFacultets::show()
 {
-
+    auto data = "Факультеты";
+    auto contentMainMenu = ftxui::Renderer([&](){return ftxui::paragraphAlignCenter(data);});
+    _mainMenu->updateContent(contentMainMenu);
 }

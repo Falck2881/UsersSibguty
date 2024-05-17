@@ -53,25 +53,10 @@ void FKWgt::MainMenu::placeComponents()
 
     sectionContent = Renderer([&]{return paragraphAlignCenter(Fk::Helpers::FileStream::data());});
 
-    layout = Fk::Helpers::Layout::ResizebleToLeft(allButtons, sectionContent) | flex;
+    layoutInMainMenu = Fk::Helpers::Layout::ResizebleToLeft(allButtons, sectionContent) | flex;
 
-    sectionRender = Renderer(layout, [&](){return vbox({layout->Render()}) | borderHeavy;});
+    sectionRender = Renderer(layoutInMainMenu, [&](){return vbox({layoutInMainMenu->Render()}) | borderHeavy;});
 
-}
-
-ftxui::Element FKWgt::MainMenu::infoRelease()
-{
-    std::ifstream mainData{"release.txt"};
-    std::string info;
-
-    if (!mainData.is_open())
-        info = "Error: file not exists";
-
-    std::stringstream stream;
-    stream << mainData.rdbuf();
-    info = stream.str();
-
-    return paragraph(info);
 }
 
 void FKWgt::MainMenu::show()
@@ -79,7 +64,9 @@ void FKWgt::MainMenu::show()
     screen.Loop(sectionRender);
 }
 
-void FKWgt::MainMenu::updateContent(ftxui::Component element)
+void FKWgt::MainMenu::updateContent(ftxui::Component content)
 {
-
+    layoutInMainMenu = Fk::Helpers::Layout::ResizebleToLeft(allButtons, content) | flex;
+    sectionRender = Renderer(layoutInMainMenu, [&](){return vbox({layoutInMainMenu->Render()}) | borderHeavy;});
+    show();
 }
