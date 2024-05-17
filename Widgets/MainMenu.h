@@ -23,9 +23,11 @@ namespace FKWgt
 
         public:
             void show();
+            void updateContent(ftxui::Component component);
 
         private:
-            void initializedLayouts();
+            void placeComponents();
+            ftxui::Element infoRelease();
 
         private:
             Fk::ActionButton actionToButtonMain;
@@ -38,6 +40,12 @@ namespace FKWgt
             std::unique_ptr<ftxui::Component> buttonFacultets;
             std::unique_ptr<ftxui::Component> buttonGroups;
             std::unique_ptr<ftxui::Component> buttonHistorySearch;
+            ftxui::Component allButtons;
+            ftxui::ScreenInteractive screen;
+            ftxui::Component sectionContent;
+            ftxui::Component sectionRender;
+            ftxui::Component layout;
+            int minSize;
     };
 
 };

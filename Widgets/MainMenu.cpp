@@ -4,6 +4,11 @@
 #include "Contents/IShowContentFacultets.h"
 #include "Contents/IShowContentGroups.h"
 #include "Contents/IShowContentHistorySearch.h"
+#include "Helpers/LayoutHelpers.h"
+#include "Helpers/FileStreamHelpers.h"
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 using namespace ftxui;
 using namespace Fk::Interface;
@@ -14,57 +19,67 @@ FKWgt::MainMenu::MainMenu():
     actionToButtonFacultets{Fk::ActionButton(std::make_unique<Fk::Content>(std::make_unique<IShowContentFacultets>(this)))},
     actionToButtonGroups{Fk::ActionButton(std::make_unique<Fk::Content>(std::make_unique<IShowContentGroups>(this)))},
     actionHistorySearch{Fk::ActionButton(std::make_unique<Fk::Content>(std::make_unique<IShowContentHistorySearch>(this)))},
-    buttonMain{std::make_unique<Component>(Button("Главная", std::bind(&Fk::ActionButton::onClick, &actionToButtonMain), ButtonOption::Animated()))},
-    buttonUsers{std::make_unique<Component>(Button("Пользователи", std::bind(&Fk::ActionButton::onClick, &actionToButtonUsers), ButtonOption::Animated()))},
-    buttonFacultets{std::make_unique<Component>(Button("Факультеты", std::bind(&Fk::ActionButton::onClick, &actionToButtonFacultets), ButtonOption::Animated()))},
-    buttonGroups{std::make_unique<Component>(Button("Группы", std::bind(&Fk::ActionButton::onClick, &actionToButtonGroups), ButtonOption::Animated()))},
-    buttonHistorySearch{std::make_unique<Component>(Button("История поиска", std::bind(&Fk::ActionButton::onClick, &actionHistorySearch), ButtonOption::Animated()))}
+    buttonMain{std::make_unique<Component>(Button("Главная",
+                                                    std::bind(&Fk::ActionButton::onClick, &actionToButtonMain),
+                                                    ButtonOption::Animated()))},
+    buttonUsers{std::make_unique<Component>(Button("Пользователи",
+                                                     std::bind(&Fk::ActionButton::onClick, &actionToButtonUsers),
+                                                     ButtonOption::Animated()))},
+    buttonFacultets{std::make_unique<Component>(Button("Факультеты",
+                                                         std::bind(&Fk::ActionButton::onClick, &actionToButtonFacultets),
+                                                         ButtonOption::Animated()))},
+    buttonGroups{std::make_unique<Component>(Button("Группы",
+                                                      std::bind(&Fk::ActionButton::onClick, &actionToButtonGroups),
+                                                      ButtonOption::Animated()))},
+    buttonHistorySearch{std::make_unique<Component>(Button("История поиска",
+                                                             std::bind(&Fk::ActionButton::onClick, &actionHistorySearch),
+                                                             ButtonOption::Animated()))},
+    screen{ScreenInteractive::Fullscreen()}
 {
+    placeComponents();
+}
 
+void FKWgt::MainMenu::placeComponents()
+{
+    allButtons = Fk::Helpers::Layout::Vertical({*buttonMain.get(),
+                                               Renderer([]{return separatorHeavy();}),
+                                               *buttonUsers.get(),
+                                               Renderer([]{return separatorHeavy();}),
+                                               *buttonFacultets.get(),
+                                               Renderer([]{return separatorHeavy();}),
+                                               *buttonGroups.get(),
+                                               Renderer([]{return separatorHeavy();}),
+                                                *buttonHistorySearch.get()}) | flex;
+
+    sectionContent = Renderer([&]{return paragraphAlignCenter(Fk::Helpers::FileStream::data());});
+
+    layout = Fk::Helpers::Layout::ResizebleToLeft(allButtons, sectionContent) | flex;
+
+    sectionRender = Renderer(layout, [&](){return vbox({layout->Render()}) | borderHeavy;});
+
+}
+
+ftxui::Element FKWgt::MainMenu::infoRelease()
+{
+    std::ifstream mainData{"release.txt"};
+    std::string info;
+
+    if (!mainData.is_open())
+        info = "Error: file not exists";
+
+    std::stringstream stream;
+    stream << mainData.rdbuf();
+    info = stream.str();
+
+    return paragraph(info);
 }
 
 void FKWgt::MainMenu::show()
 {
-    int value = 0;
-      auto action = [&] { value++; };
-      auto action_renderer =
-          Renderer([&] { return text("count = " + std::to_string(value)); });
+    screen.Loop(sectionRender);
+}
 
-      auto buttons =
-          Container::Vertical({
-              action_renderer,
-              Renderer([] { return separator(); }),
-              Container::Horizontal({
-                  Container::Vertical({
-                      Button("Ascii 1", action, ButtonOption::Ascii()),
-                      Button("Ascii 2", action, ButtonOption::Ascii()),
-                      Button("Ascii 3", action, ButtonOption::Ascii()),
-                  }),
-                  Renderer([] { return separator(); }),
-                  Container::Vertical({
-                      Button("Simple 1", action, ButtonOption::Simple()),
-                      Button("Simple 2", action, ButtonOption::Simple()),
-                      Button("Simple 3", action, ButtonOption::Simple()),
-                  }),
-                  Renderer([] { return separator(); }),
-                  Container::Vertical({
-                      Button("Animated 1", action, ButtonOption::Animated()),
-                      Button("Animated 2", action, ButtonOption::Animated()),
-                      Button("Animated 3", action, ButtonOption::Animated()),
-                  }),
-                  Renderer([] { return separator(); }),
-                  Container::Vertical({
-                      Button("Animated 4", action,
-                             ButtonOption::Animated(Color::Red)),
-                      Button("Animated 5", action,
-                             ButtonOption::Animated(Color::Green)),
-                      Button("Animated 6", action,
-                             ButtonOption::Animated(Color::Blue)),
-                  }),
-              }),
-          }) |
-          border;
+void FKWgt::MainMenu::updateContent(ftxui::Component element)
+{
 
-      auto screen = ScreenInteractive::FitComponent();
-      screen.Loop(buttons);
 }

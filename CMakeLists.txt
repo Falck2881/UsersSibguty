@@ -13,6 +13,10 @@ FetchContent_Declare(ftxui
 )
 FetchContent_MakeAvailable(ftxui)
 
+set(Helpers Helpers/LayoutHelpers.h
+            Helpers/LayoutHelpers.cpp
+            Helpers/FileStreamHelpers.h
+            Helpers/FileStreamHelpers.cpp)
 
 set(WIDGETS Widgets/MainMenu.h
             Widgets/MainMenu.cpp
@@ -27,10 +31,12 @@ set(Content Contents/Content.cpp Contents/Content.h
             Contents/IShowContentGroups.h Contents/IShowContentGroups.cpp
             Contents/IShowContentHistorySearch.h Contents/IShowContentHistorySearch.cpp)
 
-add_executable(UsersSibguty main.cpp ${WIDGETS} ${Content})
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Data/release.txt" ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 
-target_link_directories(UsersSibguty PRIVATE Widgets/ Contents/)
+add_executable(UsersSibguty main.cpp ${WIDGETS} ${Content} ${Helpers})
+
+target_link_directories(UsersSibguty PRIVATE Widgets/ Contents/ Helpers/)
 
 target_link_libraries(UsersSibguty  PRIVATE ftxui::screen
                                     PRIVATE ftxui::dom
-                                    PRIVATE ftxui::component)
+                                    PRIVATE ftxui::Component)
