@@ -1,11 +1,11 @@
 #include <iostream>
-#include "Widgets/MainMenu.h"
+#include "Components/MainMenuWindow.h"
 
 using namespace std;
 
 int main()
 {
-    FKWgt::MainMenu mainMenu;
-    mainMenu.show();
+    std::unique_ptr<Fk::MainMenuWindow> mainMenu{std::make_unique<Fk::MainMenuWindow>()};
+    mainMenu->show();
     return 0;
 }
